@@ -1,24 +1,27 @@
-import React from 'react';
+import {useState} from 'react';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { PhoneBook } from '../PhoneBook/PhoneBook';
 
-class Form extends React.Component {
+const Form = ()=> {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
-  };
-  state = {
-    name: '',
-    number: '',
+};
+const [name, setName] = useState(``);
+const [number, setNumber] = useState(``);
+const state = {
+    name,
+    number,
   };
 
-  SubmitForm = evt => {
+ const SubmitForm = evt => {
     evt.preventDefault();
-    this.props.onSubmit({ ...this.state, id: nanoid() });
-    this.setState({ name: '', number: '' });
+    onSubmit({ ...state, id: nanoid() });
+   setName(``);
+   setNumber(``);
   };
 
-  ChangeInput = evt => {
+  const ChangeInput = evt => {
     const { name, value } = evt.target;
     this.setState({ [name]: value });
   };
