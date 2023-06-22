@@ -1,39 +1,45 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { PhoneBook } from '../PhoneBook/PhoneBook';
 
-const Form = ()=> {
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-};
-const [name, setName] = useState(``);
-const [number, setNumber] = useState(``);
-const state = {
+const Form = ({ onSubmit }) => {
+  const [name, setName] = useState(``);
+  const [number, setNumber] = useState(``);
+  const state = {
     name,
     number,
   };
 
- const SubmitForm = evt => {
+  const SubmitForm = evt => {
     evt.preventDefault();
     onSubmit({ ...state, id: nanoid() });
-   setName(``);
-   setNumber(``);
+    setName(``);
+    setNumber(``);
   };
 
   const ChangeInput = evt => {
-    const { name, value } = evt.target;
-    this.setState({ [name]: value });
+    const { name } = evt.target;
+    switch (name) {
+      case `name`:
+        setName(evt.target.value);
+        break;
+      case `number`:
+        setNumber(evt.target.value);
+        break;
+      default:
+        return;
+    }
   };
-
-  render() {
-    return (
-      <PhoneBook
-        SubmitForm={this.SubmitForm}
-        ChangeInput={this.ChangeInput}
-        options={this.state}
-      />
-    );
-  }
-}
+  return (
+    <PhoneBook
+      SubmitForm={SubmitForm}
+      ChangeInput={ChangeInput}
+      options={state}
+    />
+  );
+};
+Form.propTypes = {
+  onSubmit: PropTypes.func,
+};
 export { Form };
